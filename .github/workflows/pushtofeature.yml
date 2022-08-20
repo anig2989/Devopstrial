@@ -37,8 +37,8 @@ jobs:
         if: startsWith(github.ref, 'refs/heads/demo')
         uses: devops-infra/action-pull-request@v0.4.2
         env:
-          Test: ${{ secrets.REPO_SCOPED_TOKEN }}
+          REPO_SCOPED_TOKEN: ${{ secrets.REPO_SCOPED_TOKEN }}
         with:
-            Test: ${{ secrets.REPO_SCOPED_TOKEN }}
+            REPO_SCOPED_TOKEN: ${{ secrets.REPO_SCOPED_TOKEN }}
             title: Automatic pull request                           
             get_diff: true         

@@ -8,7 +8,7 @@ on:
     branches: preci
    # Jobs to be executed
 jobs:
-  pmd-run:
+  authenticate-deploy:
         runs-on: ubuntu-latest
         steps:
         # Checkout the source code

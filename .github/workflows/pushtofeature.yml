@@ -1,7 +1,7 @@
 # This is a basic workflow to help you get started with Actions
 
 name: PushToFeature
-# Controls when the workflow will run
+# Controls when the workflow will run or not
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
@@ -37,7 +37,7 @@ jobs:
         if: startsWith(github.ref, 'refs/heads/demo')
         uses: devops-infra/action-pull-request@v0.4.2
         env:
-          GITHUB_TOKEN: ${{ secrets.REPO_SCOPED_TOKEN }}
+          GITHUB_ACTION: ${{ secrets.REPO_SCOPED_TOKEN }}
         with:
             github_token: ${{ secrets.REPO_SCOPED_TOKEN }}
             title: Automatic pull request                           

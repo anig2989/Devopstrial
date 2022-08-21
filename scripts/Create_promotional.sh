@@ -45,8 +45,8 @@ git checkout -b Promotional-$DESTINATION_BRANCH_NAME-${GITHUB_RUN_ID}-${GITHUB_R
 
 git checkout Promotional-$DESTINATION_BRANCH_NAME-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
 
-git config --global user.email "${{ secrets.EMAIL_OF_USER_FOR_DESTINATION_REPO }}"
-git config --global user.name "${{ secrets.NAME_OF_USER }}"
+git config --global user.email "anig2989@gmail.com"
+git config --global user.name "Anirban Hazra"
 
 git add .
 git commit -m "creating promotional branch"

@@ -26,7 +26,7 @@ jobs:
                   
             # Authenticate dev hub
             - name: 'Authenticate Dev Hub'
-              run: sfdx force:auth:jwt:grant --clientid 3MVG9fe4g9fhX0E7Dy5LJtO93WCIHHA0Lsi9uOW5hG3RVbzSsjSB_HmDLIJnUiN.W4xJjFbtW92uXaGbYImnf --jwtkeyfile server.key --username anig2989@gmail.com --instanceurl https://login.salesforce.com 
+              run: sfdx force:auth:jwt:grant --clientid ${{ secrets.CONSUMER_KEY }} --jwtkeyfile server.key --username ${{ secrets.CI_NAME }} --instanceurl ${{ secrets.CI_URL }} 
 
             
             

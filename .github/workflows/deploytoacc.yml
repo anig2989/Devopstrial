@@ -1,7 +1,9 @@
 
 name: PromotetoCI
 
-on: [push]
+on: 
+  push:
+    branches: CI
   
 jobs:
     deploy-to-org:
@@ -16,13 +18,13 @@ jobs:
               shell: bash
               run: |
                   source ./config.sh
-                  SOURCE_DIRECTORY=`basename "${SOURCE_REPO_URL}" .git`
+                  SOURCE_DIRECTORY=`basename "${{ secrets.SOURCE_REPO_URL }}" .git`
 
-                  echo $CURRENT_BRANCH_NAME
+                  echo ${{ secrets.CURRENT_BRANCH_NAME }}
 
                   #cloning the repo.
-                  echo git clone ${SOURCE_REPO_URL}
-                  git clone ${SOURCE_REPO_URL}
+                  echo git clone ${{ secrets.SOURCE_REPO_URL }}
+                  git clone ${{ secrets.SOURCE_REPO_URL }}
 
                   #Entering into directory where the repo is cloned.
                   echo cd ${SOURCE_DIRECTORY} 
@@ -31,35 +33,35 @@ jobs:
                   echo git fetch origin
                   git fetch origin
 
-                  destination_exists=$(git ls-remote --heads origin $DESTINATION_BRANCH_NAME | wc -l)
+                  destination_exists=$(git ls-remote --heads origin ${{ secrets.DESTINATION_BRANCH_NAME }} | wc -l)
           
                   if [ $destination_exists == 0 ]; then
-                  echo "*************  No $DESTINATION_BRANCH_NAME branch exists  *************"
+                  echo "*************  No ${{ secrets.DESTINATION_BRANCH_NAME }} branch exists  *************"
                     exit 1
                   fi
 
-                  current_exists=$(git ls-remote --heads origin $CURRENT_BRANCH_NAME | wc -l)
+                  current_exists=$(git ls-remote --heads origin ${{ secrets.CURRENT_BRANCH_NAME }} | wc -l)
           
                   if [ $current_exists == 0 ]; then
-                  echo "*************  No $CURRENT_BRANCH_NAME branch exists  *************"
+                  echo "*************  No ${{ secrets.CURRENT_BRANCH_NAME }} branch exists  *************"
                     exit 1
                   fi
 
                   #Creating Promotional branch from destination branch(like CI, QA or UAT).
-                  echo git checkout $DESTINATION_BRANCH_NAME
-                  git checkout $DESTINATION_BRANCH_NAME
+                  echo git checkout ${{ secrets.DESTINATION_BRANCH_NAME }}
+                  git checkout ${{ secrets.DESTINATION_BRANCH_NAME }}
 
-                  echo git checkout -b Promotional-$DESTINATION_BRANCH_NAME-$PipelineName-$BuildPipelineId $DESTINATION_BRANCH_NAME
-                  git checkout -b Promotional-$DESTINATION_BRANCH_NAME-$PipelineName-$BuildPipelineId $DESTINATION_BRANCH_NAME
+                  echo git checkout -b Promotional-${{ secrets.DESTINATION_BRANCH_NAME }}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER} ${{ secrets.DESTINATION_BRANCH_NAME }}
+                  git checkout -b Promotional-${{ secrets.DESTINATION_BRANCH_NAME }}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER} ${{ secrets.DESTINATION_BRANCH_NAME }}
 
-                  git checkout Promotional-$DESTINATION_BRANCH_NAME-$PipelineName-$BuildPipelineId
+                  git checkout Promotional-${{ secrets.DESTINATION_BRANCH_NAME }}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
 
                   git config --global user.email "${EMAIL_OF_USER_FOR_DESTINATION_REPO}"
                   git config --global user.name "${NAME_OF_USER}"
 
                   git add .
                   git commit -m "creating promotional branch"
-                  git push origin Promotional-$DESTINATION_BRANCH_NAME-$PipelineName-$BuildPipelineId
+                  git push origin Promotional-${{ secrets.DESTINATION_BRANCH_NAME }}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
                   exec_cmd()
                   {
                     echo "$1"
@@ -87,12 +89,12 @@ jobs:
                     fi
                    }
 
-                   echo git merge origin/$CURRENT_BRANCH_NAME
-                   exec_cmd "git merge origin/$CURRENT_BRANCH_NAME"
+                   echo git merge origin/${{ secrets.CURRENT_BRANCH_NAME }}
+                   exec_cmd "git merge origin/${{ secrets.CURRENT_BRANCH_NAME }}"
 
                    #Merging current branch with Promotional branch.
-                   #echo git merge origin/$CURRENT_BRANCH_NAME
-                   #git merge origin/$CURRENT_BRANCH_NAME
+                   #echo git merge origin/${{ secrets.CURRENT_BRANCH_NAME }}
+                   #git merge origin/${{ secrets.CURRENT_BRANCH_NAME }}
 
                    #Pushing Promotional branch.
                    exec_cmd()
@@ -103,20 +105,20 @@ jobs:
                      if [ $return_code -ne 0 ] ; then
       
                        echo "ERROR - $1 failed with $return_code"
-                       echo git checkout $DESTINATION_BRANCH_NAME
-                       git checkout $DESTINATION_BRANCH_NAME
+                       echo git checkout ${{ secrets.DESTINATION_BRANCH_NAME }}
+                       git checkout ${{ secrets.DESTINATION_BRANCH_NAME }}
 
-                       git checkout -d Promotional-$DESTINATION_BRANCH_NAME-$PipelineName-$BuildPipelineId
-                       git push origin --delete Promotional-$DESTINATION_BRANCH_NAME-$PipelineName-$BuildPipelineId
+                       git checkout -d Promotional-${{ secrets.DESTINATION_BRANCH_NAME }}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
+                       git push origin --delete Promotional-${{ secrets.DESTINATION_BRANCH_NAME }}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
                        exit 1
                       else
-                       echo "Successfully created Promotional-$DESTINATION_BRANCH_NAME-$PipelineName-$BuildPipelineId branch"
+                       echo "Successfully created Promotional-${{ secrets.DESTINATION_BRANCH_NAME }}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER} branch"
                       fi
                     }
-                    echo git push origin Promotional-$DESTINATION_BRANCH_NAME-$PipelineName-$BuildPipelineId
-                    exec_cmd "git push origin Promotional-$DESTINATION_BRANCH_NAME-$PipelineName-$BuildPipelineId"
+                    echo git push origin Promotional-${{ secrets.DESTINATION_BRANCH_NAME }}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
+                    exec_cmd "git push origin Promotional-${{ secrets.DESTINATION_BRANCH_NAME }}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}"
 
-        # Install Salesforce CLI
+            # Install Salesforce CLI
             - name: 'Install Salesforce CLI'
               run: |
                   wget https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz
@@ -125,16 +127,6 @@ jobs:
                   echo "$HOME/sfdx/bin" >> $GITHUB_PATH
                   ~/sfdx/bin/sfdx version
                   
-        # Store secret for acc org
-        #    - name: 'Populate auth file with ACC_SFDX_URL secret'
-        #      shell: bash
-        #      run: |
-        #          echo ${{ secrets.ACC_SFDX_URL}} > ./ACC_SFDX_URL.txt
-        #          secretFileSize=$(wc -c "./ACC_SFDX_URL.txt" | awk '{print $1}')
-        #          if [ $secretFileSize == 1 ]; then
-        #              echo "Missing ACC_SFDX_URL secret. Is this workflow running on a fork?";
-        #              exit 1;
-        #          fi
             # Authenticate Org
             - name: 'Authenticate CI Org'
               run: sfdx force:auth:jwt:grant --clientid 3MVG9fe4g9fhX0E7Dy5LJtO93WCIHHA0Lsi9uOW5hG3RVbzSsjSB_HmDLIJnUiN.W4xJjFbtW92uXaGbYImnf --jwtkeyfile server.key --username anig2989@gmail.com --instanceurl https://login.salesforce.com 
@@ -149,27 +141,27 @@ jobs:
               shell: bash
               run: |
                   source ./config.sh
-                  git remote set-url origin ${SOURCE_REPO_URL}
-                  git config --global user.email "${EMAIL_OF_USER_FOR_DESTINATION_REPO}"
-                  git config --global user.name "${NAME_OF_USER}"
+                  git remote set-url origin ${{ secrets.SOURCE_REPO_URL }}
+                  git config --global user.email "${{ secrets.EMAIL_OF_USER_FOR_DESTINATION_REPO }}"
+                  git config --global user.name "${{ secrets.NAME_OF_USER }}"
                   git fetch
-                  echo git checkout Promotional-$DESTINATION_BRANCH_NAME-$PipelineName-$BuildPipelineId
-                  git checkout Promotional-$DESTINATION_BRANCH_NAME-$PipelineName-$BuildPipelineId
-                  echo git checkout $DESTINATION_BRANCH_NAME
-                  git checkout $DESTINATION_BRANCH_NAME
-                  echo git merge origin/Promotional-$DESTINATION_BRANCH_NAME-$PipelineName-$BuildPipelineId
-                  git merge origin/Promotional-$DESTINATION_BRANCH_NAME-$PipelineName-$BuildPipelineId
-                  echo git push origin $DESTINATION_BRANCH_NAME
-                  git push origin $DESTINATION_BRANCH_NAME
+                  echo git checkout Promotional-${{ secrets.DESTINATION_BRANCH_NAME }}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
+                  git checkout Promotional-${{ secrets.DESTINATION_BRANCH_NAME }}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
+                  echo git checkout ${{ secrets.DESTINATION_BRANCH_NAME }}
+                  git checkout ${{ secrets.DESTINATION_BRANCH_NAME }}
+                  echo git merge origin/Promotional-${{ secrets.DESTINATION_BRANCH_NAME }}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
+                  git merge origin/Promotional-${{ secrets.DESTINATION_BRANCH_NAME }}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
+                  echo git push origin ${{ secrets.DESTINATION_BRANCH_NAME }}
+                  git push origin ${{ secrets.DESTINATION_BRANCH_NAME }}
                   
               # Delete promotional branch
             - name: 'Deleting promotional branch'
               run: |
                   source ./config.sh
                   git remote set-url origin ${SOURCE_REPO_URL}
-                  echo git checkout $DESTINATION_BRANCH_NAME
-                  git checkout $DESTINATION_BRANCH_NAME
-                  git push origin --delete Promotional-$DESTINATION_BRANCH_NAME-$PipelineName-$BuildPipelineId
+                  echo git checkout ${{ secrets.DESTINATION_BRANCH_NAME }}
+                  git checkout ${{ secrets.DESTINATION_BRANCH_NAME }}
+                  git push origin --delete Promotional-${{ secrets.DESTINATION_BRANCH_NAME }}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
         
 
    

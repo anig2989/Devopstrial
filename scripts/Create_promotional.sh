@@ -1,8 +1,8 @@
 #using config.sh as source file
 source ./config.sh
-#SOURCE_REPO_URL=""
-#NAME_OF_USER=""
-#EMAIL_OF_USER_FOR_DESTINATION_REPO=""
+SOURCE_REPO_URL="https://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@github.com/anig2989/Devopstrial.git"
+NAME_OF_USER="Anirban Hazra"
+EMAIL_OF_USER_FOR_DESTINATION_REPO="anig2989@gmail.com"
 
 #defing local repo directory in variable after cloning.
 SOURCE_DIRECTORY=`basename "${SOURCE_REPO_URL}" .git`

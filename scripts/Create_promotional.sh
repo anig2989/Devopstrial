@@ -4,7 +4,7 @@ SOURCE_REPO_URL="https://anig2989:Ani@112358@github.com/anig2989/Devopstrial.git
 NAME_OF_USER="anig2989"
 EMAIL_OF_USER_FOR_DESTINATION_REPO="anig2989@gmail.com"
 #CURRENT_BRANCH_NAME='preci'
-DESTINATION_BRANCH_NAME='CI'
+#DESTINATION_BRANCH_NAME='CI'
 
 #defing local repo directory in variable after cloning.
 SOURCE_DIRECTORY=`basename "${SOURCE_REPO_URL}" .git`

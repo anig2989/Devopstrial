@@ -1,12 +1,11 @@
-# This is a basic workflow to help you get started with Actions
 
-name: HandlePullRequesttoMaster
-# Controls when the workflow will run
+name: HandlePullRequest
+
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
+  
   pull_request:
     branches: preci
-   # Jobs to be executed
+  
 jobs:
   authenticate-deploy:
         runs-on: ubuntu-latest
@@ -25,11 +24,23 @@ jobs:
                   echo "$HOME/sfdx/bin" >> $GITHUB_PATH
                   ~/sfdx/bin/sfdx version
                   
-                  
-          # Authenticate dev hub
+            # Authenticate dev hub
             - name: 'Authenticate Dev Hub'
               run: sfdx force:auth:jwt:grant --clientid 3MVG9fe4g9fhX0E7Dy5LJtO93WCIHHA0Lsi9uOW5hG3RVbzSsjSB_HmDLIJnUiN.W4xJjFbtW92uXaGbYImnf --jwtkeyfile server.key --username anig2989@gmail.com --instanceurl https://login.salesforce.com 
 
+            # Run Apex tests in scratch org
+            - name: 'Run Apex tests'
+              run: sfdx force:apex:test:run -c -r human -d ./tests/apex -w 20
+
+            # Delete temporary test file that Codecov is unable to parse
+            - name: 'Delete coverage file (temporary step)'
+              run: rm ./tests/apex/test-result-707*-codecoverage.json
+
+            # Upload code coverage data
+            - name: 'Upload code coverage for Apex to Codecov.io'
+              uses: codecov/codecov-action@v2.0.2
+              with:
+                  flags: Apex
 
             
         

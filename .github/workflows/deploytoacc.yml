@@ -18,13 +18,13 @@ jobs:
               shell: bash
               run: |
                   source ./config.sh
-                  SOURCE_DIRECTORY=`basename "${{ secrets.SOURCE_REPO_URL }}" .git`
+                  SOURCE_DIRECTORY=`basename "${SOURCE_REPO_URL}" .git`
 
                   echo ${{ secrets.CURRENT_BRANCH_NAME }}
 
                   #cloning the repo.
-                  echo git clone ${{ secrets.SOURCE_REPO_URL }}
-                  git clone ${{ secrets.SOURCE_REPO_URL }}
+                  echo git clone ${SOURCE_REPO_URL}
+                  git clone ${SOURCE_REPO_URL}
 
                   #Entering into directory where the repo is cloned.
                   echo cd ${SOURCE_DIRECTORY} 

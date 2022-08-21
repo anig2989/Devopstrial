@@ -2,8 +2,13 @@
 name: PromoteCI
 
 on: 
-    
-  workflow_dispatch:
+   push:
+    branches: [ "CI" ]
+   pull_request:
+    branches: [ "CI" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+   workflow_dispatch:
   
 jobs:
     deploy-to-org:

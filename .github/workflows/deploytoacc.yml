@@ -9,11 +9,11 @@ jobs:
     deploy-to-org:
         runs-on: ubuntu-latest
         steps:
-        # Checkout the source code
+            # Checkout the source code
             - name: 'Checkout source code'
               uses: actions/checkout@v2
               
-        #  Create promotional Branch     
+            #  Create promotional Branch     
             - name: 'Creating promotional branch before code promotion'
               shell: bash
               run: |
@@ -21,7 +21,6 @@ jobs:
                   echo "Creating promotional Branch..."
                   chmod +x scripts/Create_promotional.sh
                   sh scripts/Create_promotional.sh
-                  exec_cmd "git push origin Promotional-${DESTINATION_BRANCH_NAME}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}"
 
             # Install Salesforce CLI
             - name: 'Install Salesforce CLI'

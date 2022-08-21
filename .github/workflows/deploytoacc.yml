@@ -2,15 +2,31 @@
 name: CI
 
 on: 
-   push:
-    branches: [ "main" ]
-   pull_request:
-    branches: [ "main" ]
-
+   
    workflow_dispatch:
-  
+     inputs:
+      logLevel:
+        description: 'Enter the CURRENT BRANCH NAME'
+        required: true
+        default: 'preci'
+        type: choice
+        options:
+        - preci
+        - CI
+        - QA
+        - UAT
+      
 jobs:
-    deploy-to-org:
+  log-the-inputs:
+       runs-on: ubuntu-latest
+       steps:
+          - run: |
+              echo "Our CURRENT BRANCH NAME is: $LEVEL"
+            env:
+             LEVEL: ${{ inputs.logLevel }}
+          
+  
+  deploy-to-org:
         runs-on: ubuntu-latest
         steps:
             # Checkout the source code

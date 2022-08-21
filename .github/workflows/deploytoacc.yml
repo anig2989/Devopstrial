@@ -53,6 +53,9 @@ jobs:
                   echo "Creating promotional Branch..."
                   chmod +x scripts/Create_promotional.sh
                   sh scripts/Create_promotional.sh
+              env:
+               CURRENT_BRANCH_NAME: ${{ inputs.CurrentBranch }}
+               DESTINATION_BRANCH_NAME: ${{ inputs.DestinationBranch }}
 
             # Install Salesforce CLI
             - name: 'Install Salesforce CLI'
@@ -90,6 +93,10 @@ jobs:
                   echo git push origin ${DESTINATION_BRANCH_NAME}
                   git push origin ${DESTINATION_BRANCH_NAME}
                   
+              env:
+               CURRENT_BRANCH_NAME: ${{ inputs.CurrentBranch }}
+               DESTINATION_BRANCH_NAME: ${{ inputs.DestinationBranch }}
+                  
               # Delete promotional branch
             - name: 'Deleting promotional branch'
               run: |
@@ -99,5 +106,7 @@ jobs:
                   git checkout ${DESTINATION_BRANCH_NAME}
                   git push origin --delete Promotional-${DESTINATION_BRANCH_NAME}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
         
-
+              env:
+               CURRENT_BRANCH_NAME: ${{ inputs.CurrentBranch }}
+               DESTINATION_BRANCH_NAME: ${{ inputs.DestinationBranch }}
    

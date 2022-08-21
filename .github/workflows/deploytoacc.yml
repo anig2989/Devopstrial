@@ -1,8 +1,7 @@
 
 name: PromotetoCI
 
-on: 
-  workflow_dispatch:
+on: [push]
   
 jobs:
     deploy-to-org:

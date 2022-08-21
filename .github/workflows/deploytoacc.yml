@@ -1,5 +1,5 @@
 
-name: PromotetoCI
+name: PromoteCI
 
 on: 
   push:

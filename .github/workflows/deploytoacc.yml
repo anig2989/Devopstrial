@@ -21,9 +21,9 @@ jobs:
        runs-on: ubuntu-latest
        steps:
           - run: |
-              echo "Our CURRENT BRANCH NAME is: $LEVEL"
+              echo "Our CURRENT BRANCH NAME is: $CURRENT_BRANCH_NAME"
             env:
-             LEVEL: ${{ inputs.logLevel }}
+             CURRENT_BRANCH_NAME: ${{ inputs.logLevel }}
           
   
   deploy-to-org:

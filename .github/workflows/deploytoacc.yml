@@ -15,7 +15,7 @@ on:
         - CI
         - QA
         - UAT
-      
+
 jobs:
   log-the-inputs:
        runs-on: ubuntu-latest

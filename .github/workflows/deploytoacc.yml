@@ -1,12 +1,11 @@
-# This is a basic workflow to help you get started with Actions
 
-name: DeploytoProd
-# Controls when the workflow will run
+name: PromotetoCI
+
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
+ 
   push:
-    branches: none
-   # Jobs to be executed
+    branches: CI
+  
 jobs:
     deploy-acc:
         runs-on: ubuntu-latest
@@ -24,21 +23,22 @@ jobs:
                   ~/sfdx/bin/sfdx version
                   
         # Store secret for acc org
-            - name: 'Populate auth file with ACC_SFDX_URL secret'
-              shell: bash
-              run: |
-                  echo ${{ secrets.ACC_SFDX_URL}} > ./ACC_SFDX_URL.txt
-                  secretFileSize=$(wc -c "./ACC_SFDX_URL.txt" | awk '{print $1}')
-                  if [ $secretFileSize == 1 ]; then
-                      echo "Missing ACC_SFDX_URL secret. Is this workflow running on a fork?";
-                      exit 1;
-                  fi
-            # Authenticate acc
-            - name: 'Authenticate Acc'
-              run: sfdx auth:sfdxurl:store -f ./ACC_SFDX_URL.txt -a meeraacc -d
+        #    - name: 'Populate auth file with ACC_SFDX_URL secret'
+        #      shell: bash
+        #      run: |
+        #          echo ${{ secrets.ACC_SFDX_URL}} > ./ACC_SFDX_URL.txt
+        #          secretFileSize=$(wc -c "./ACC_SFDX_URL.txt" | awk '{print $1}')
+        #          if [ $secretFileSize == 1 ]; then
+        #              echo "Missing ACC_SFDX_URL secret. Is this workflow running on a fork?";
+        #              exit 1;
+        #          fi
+            # Authenticate Org
+            - name: 'Authenticate CI Org'
+              run: sfdx force:auth:jwt:grant --clientid 3MVG9fe4g9fhX0E7Dy5LJtO93WCIHHA0Lsi9uOW5hG3RVbzSsjSB_HmDLIJnUiN.W4xJjFbtW92uXaGbYImnf --jwtkeyfile server.key --username anig2989@gmail.com --instanceurl https://login.salesforce.com 
+
               
-            # Deploy source to Acc org
+            # Deploy source to CI Org
             - name: 'Push source to Acc org'
-              run: sfdx force:source:deploy -u meeraacc@gmail.com -p force-app/main/default
+              run: sfdx force:source:deploy -c -u anig2989@gmail.com -p force-app/main/default
 
    

@@ -30,7 +30,7 @@ jobs:
 
             # Run Apex tests in scratch org
             - name: 'Run Apex tests'
-              run: sfdx force:apex:test:run -c -r human -d ./tests/apex -w 20
+              run: sfdx force:apex:test:run -c -r -u anig2989@gmail.com human -d ./tests/apex -w 20
 
             # Delete temporary test file that Codecov is unable to parse
             - name: 'Delete coverage file (temporary step)'

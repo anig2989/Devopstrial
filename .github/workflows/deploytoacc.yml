@@ -5,7 +5,7 @@ on:
    
    workflow_dispatch:
      inputs:
-      logLevel:
+      CurrentBranch:
         description: 'Enter the CURRENT BRANCH NAME'
         required: true
         default: 'preci'
@@ -15,15 +15,27 @@ on:
         - CI
         - QA
         - UAT
-
+        
+      DestinationBranch:
+        type: choice
+        description: Enter the DESTINATION BRANCH NAME
+        required: true
+        default: 'CI'
+        options: 
+        - preci
+        - CI
+        - QA
+        - UAT
 jobs:
   log-the-inputs:
        runs-on: ubuntu-latest
        steps:
           - run: |
-              echo "Our CURRENT BRANCH NAME is: $LEVEL"
+              echo "Our CURRENT BRANCH NAME is: $CURRENT_BRANCH_NAME"
             env:
-             LEVEL: ${{ inputs.logLevel }}
+             CURRENT_BRANCH_NAME: ${{ inputs.CurrentBranch }}
+             DESTINATION_BRANCH_NAME: ${{ inputs.DestinationBranch }}
+             
           
   
   deploy-to-org:

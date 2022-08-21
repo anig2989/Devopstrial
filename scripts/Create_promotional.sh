@@ -38,17 +38,17 @@ fi
 echo git checkout $DESTINATION_BRANCH_NAME
 git checkout $DESTINATION_BRANCH_NAME
 
-echo git checkout -b Promotional-$DESTINATION_BRANCH_NAME-$PipelineName-$BuildPipelineId $DESTINATION_BRANCH_NAME
-git checkout -b Promotional-$DESTINATION_BRANCH_NAME-$PipelineName-$BuildPipelineId $DESTINATION_BRANCH_NAME
+echo git checkout -b Promotional-$DESTINATION_BRANCH_NAME-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER} $DESTINATION_BRANCH_NAME
+git checkout -b Promotional-$DESTINATION_BRANCH_NAME-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER} $DESTINATION_BRANCH_NAME
 
-git checkout Promotional-$DESTINATION_BRANCH_NAME-$PipelineName-$BuildPipelineId
+git checkout Promotional-$DESTINATION_BRANCH_NAME-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
 
 git config --global user.email "${EMAIL_OF_USER_FOR_DESTINATION_REPO}"
 git config --global user.name "${NAME_OF_USER}"
 
 git add .
 git commit -m "creating promotional branch"
-git push origin Promotional-$DESTINATION_BRANCH_NAME-$PipelineName-$BuildPipelineId
+git push origin Promotional-$DESTINATION_BRANCH_NAME-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
 
 exec_cmd()
 {
@@ -95,12 +95,12 @@ exec_cmd()
     echo git checkout $DESTINATION_BRANCH_NAME
     git checkout $DESTINATION_BRANCH_NAME
 
-    git checkout -d Promotional-$DESTINATION_BRANCH_NAME-$PipelineName-$BuildPipelineId
-    git push origin --delete Promotional-$DESTINATION_BRANCH_NAME-$PipelineName-$BuildPipelineId
+    git checkout -d Promotional-$DESTINATION_BRANCH_NAME-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
+    git push origin --delete Promotional-$DESTINATION_BRANCH_NAME-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
     exit 1
   else
-    echo "Successfully created Promotional-$DESTINATION_BRANCH_NAME-$PipelineName-$BuildPipelineId branch"
+    echo "Successfully created Promotional-$DESTINATION_BRANCH_NAME-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER} branch"
   fi
 }
-echo git push origin Promotional-$DESTINATION_BRANCH_NAME-$PipelineName-$BuildPipelineId
-exec_cmd "git push origin Promotional-$DESTINATION_BRANCH_NAME-$PipelineName-$BuildPipelineId"
+echo git push origin Promotional-$DESTINATION_BRANCH_NAME-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
+exec_cmd "git push origin Promotional-$DESTINATION_BRANCH_NAME-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}"

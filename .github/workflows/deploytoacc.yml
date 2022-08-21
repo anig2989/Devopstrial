@@ -1,5 +1,5 @@
 
-name: CI
+name: Promote-to-CI
 
 on: 
    

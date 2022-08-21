@@ -36,9 +36,13 @@ jobs:
       - name: Run the Action
         if: startsWith(github.ref, 'refs/heads/demo')
         uses: devops-infra/action-pull-request@v0.4.2
+        
         env:
           GITHUB_ACTION: ${{ secrets.REPO_SCOPED_TOKEN }}
         with:
             github_token: ${{ secrets.REPO_SCOPED_TOKEN }}
+            source_branch: demobranch
+            target_branch: preci
             title: Automatic pull request                           
             get_diff: true         
+       

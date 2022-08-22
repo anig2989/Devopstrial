@@ -71,14 +71,12 @@ jobs:
             - name: 'Finding delta changes'
               run: |
                   source ./config.sh
-                  git rev-parse $CURRENT_BRANCH_NAME
-                  git rev-parse $DESTINATION_BRANCH_NAME
+                  git rev-parse HEAD
+                  git rev-parse preci
                   echo destination branch commit is $GITHUB_SHA
                   echo 'y' | sfdx plugins:install sfpowerkit
                   sfdx sfpowerkit:project:diff -r $COMMIT_ID -t $NEW_COMMIT_ID -d Delta_pkg_CI
-              env:
-               CURRENT_BRANCH_NAME: ${{ inputs.CurrentBranch }}
-               DESTINATION_BRANCH_NAME: ${{ inputs.DestinationBranch }}
+              
        
             # Authenticate Org
             - name: 'Authenticate CI Org'

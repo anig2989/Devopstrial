@@ -75,8 +75,8 @@ jobs:
                   git config --global user.email "${EMAIL_OF_USER_FOR_DESTINATION_REPO}"
                   git config --global user.name "${NAME_OF_USER}"
                   git fetch
-                  echo git checkout Promotional-$DESTINATION_BRANCH_NAME-$PipelineName-$BuildPipelineId
-                  git checkout Promotional-$DESTINATION_BRANCH_NAME-$PipelineName-$BuildPipelineId
+                  echo git checkout Promotional-${DESTINATION_BRANCH_NAME}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
+                  git checkout Promotional-${DESTINATION_BRANCH_NAME}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
           
                   echo "Before $MANUAL_COMMIT_ID"
                   if [[ "$DEPLOYMENT_MODE" = '' || "$DEPLOYMENT_MODE" = Null || "$DEPLOYMENT_MODE" != 'FULL' ]]; then

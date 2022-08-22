@@ -72,7 +72,8 @@ jobs:
               run: |
                   source ./config.sh
                   git rev-parse HEAD
-                  git rev-parse preci
+                  git ls-remote git://github.com/jszakmeister/trac-backlog.git | \
+                  grep refs/heads/preci | cut -f 1
                   echo destination branch commit is $GITHUB_SHA
                   echo 'y' | sfdx plugins:install sfpowerkit
                   sfdx sfpowerkit:project:diff -r $COMMIT_ID -t $NEW_COMMIT_ID -d Delta_pkg_CI

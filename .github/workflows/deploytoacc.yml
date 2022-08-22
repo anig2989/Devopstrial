@@ -71,57 +71,9 @@ jobs:
             - name: 'Finding delta changes'
               run: |
                   source ./config.sh
-                  git remote set-url origin ${SOURCE_REPO_URL}
-                  git config --global user.email "${EMAIL_OF_USER_FOR_DESTINATION_REPO}"
-                  git config --global user.name "${NAME_OF_USER}"
-                  git fetch
-                  echo git checkout Promotional-${DESTINATION_BRANCH_NAME}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
-                  git checkout Promotional-${DESTINATION_BRANCH_NAME}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
-          
-                  echo "Before $MANUAL_COMMIT_ID"
-                  if [[ "$DEPLOYMENT_MODE" = '' || "$DEPLOYMENT_MODE" = Null || "$DEPLOYMENT_MODE" != 'FULL' ]]; then
-                    echo "Before MANUAL_COMMIT_ID $MANUAL_COMMIT_ID"
-                    if [[ "$MANUAL_COMMIT_ID" = '' || "$MANUAL_COMMIT_ID" = Null ]]; then 
-                       PREVIOUS_SUCCESSFUL_COMMIT_ID=$((curl -u $(gitusername):$(TOKEN) "$(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_apis/build/builds?resultFilter=succeeded&branchName=refs/heads/CI") | grep -o '"sourceVersion":.*' | cut -d, -f1 | awk -F':' '{print $2}' | sed 's/"//g')
-                       echo PREVIOUS_SUCCESSFUL_COMMIT_ID $PREVIOUS_SUCCESSFUL_COMMIT_ID
-                       #echo "##vso[task.setvariable variable=COMMIT_ID]$PREVIOUS_SUCCESSFUL_COMMIT_ID"
-                       COMMIT_ID=$PREVIOUS_SUCCESSFUL_COMMIT_ID
-                    else
-                       echo "latest commit id"
-                       count1=$(git log --pretty=oneline HEAD...$MANUAL_COMMIT_ID --first-parent | wc -l )
-                       if [[ "$count1" = 0 ]]; then
-                         PREVIOUS_SUCCESSFUL_COMMIT_ID=$((curl -u $(GIT_USERNAME):$(SOURCE_TOKEN) "$(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_apis/build/builds?resultFilter=succeeded&branchName=refs/heads/CI") | grep -o '"sourceVersion":.*' | cut -d, -f1 | awk -F':' '{print $2}' | sed 's/"//g')
-                         if [[ "$PREVIOUS_SUCCESSFUL_COMMIT_ID" = '' || "$PREVIOUS_SUCCESSFUL_COMMIT_ID" = Null ]]; then
-                           #echo "##vso[task.setvariable variable=COMMIT_ID]$MANUAL_COMMIT_ID" 
-                           COMMIT_ID=$MANUAL_COMMIT_ID
-                           echo manual commit id copied to commit id
-                           echo COMMIT_ID $COMMIT_ID 
-                         else
-                           #echo "##vso[task.setvariable variable=COMMIT_ID]$PREVIOUS_SUCCESSFUL_COMMIT_ID"
-                           COMMIT_ID=$PREVIOUS_SUCCESSFUL_COMMIT_ID
-                           echo previous commit id copied to commit id
-                           echo COMMIT_ID $COMMIT_ID 
-                         fi
-                       else
-                         echo count is not 0, so printing only manual
-                         #echo "##vso[task.setvariable variable=COMMIT_ID]$MANUAL_COMMIT_ID"
-                         COMMIT_ID=$MANUAL_COMMIT_ID
-                         echo COMMIT_ID $COMMIT_ID 
-                       fi  
-                     fi
-                   fi
-                   if [[ "$DEPLOYMENT_MODE" = '' || "$DEPLOYMENT_MODE" = Null || "$DEPLOYMENT_MODE" != 'FULL' ]]; then
-                     if [[ ( "$MANUAL_COMMIT_ID" = '' || "$MANUAL_COMMIT_ID" = Null ) && ( "$COMMIT_ID" = '' || "$COMMIT_ID" = Null ) ]]; then
-                       #echo "##vso[task.setvariable variable=COMMIT_ID]$(git log --format="%P" -n 1)"
-                       #echo both commit id and manual commit id is null
-                       #echo "##vso[task.setvariable variable=COMMIT_ID]$(Build.SourceVersion)"
-                       COMMIT_ID=$(Build.SourceVersion)
-                       echo COMMIT_ID $COMMIT_ID 
-                     fi
-                   fi
-              
-              
-              
+                  sfdx plugins:install sfdx-git-delta
+                  mkdir Delta-pkg
+                  sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output Delta-pkg/ --generate-delta
             # Authenticate Org
             - name: 'Authenticate CI Org'
               run: sfdx force:auth:jwt:grant --clientid 3MVG9fe4g9fhX0E7Dy5LJtO93WCIHHA0Lsi9uOW5hG3RVbzSsjSB_HmDLIJnUiN.W4xJjFbtW92uXaGbYImnf --jwtkeyfile server.key --username anig2989@gmail.com --instanceurl https://login.salesforce.com 
@@ -129,7 +81,10 @@ jobs:
               
             # Deploy source to CI Org
             - name: 'Push source to CI org'
-              run: sfdx force:source:deploy -c -u anig2989@gmail.com -p force-app/main/default
+              run: |
+                    sfdx force:source:deploy -c -u anig2989@gmail.com -p Delta-pkg
+                    rm -rf Delta-pkg
+              
               
             # Merge to destination branch
             - name: 'Merging to destination branch'

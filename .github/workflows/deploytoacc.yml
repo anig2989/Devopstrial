@@ -70,6 +70,7 @@ jobs:
             # Find delta changes
             - name: 'Finding delta changes'
               run: |
+                  source ./config.sh
                   git remote set-url origin ${SOURCE_REPO_URL}
                   git config --global user.email "${EMAIL_OF_USER_FOR_DESTINATION_REPO}"
                   git config --global user.name "${NAME_OF_USER}"

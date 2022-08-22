@@ -72,7 +72,7 @@ jobs:
               run: |
                   source ./config.sh
                   git rev-parse HEAD
-                  git ls-remote git://github.com/jszakmeister/trac-backlog.git | \
+                  git ls-remote https://github.com/anig2989/Devopstrial.git | \
                   grep refs/heads/preci | cut -f 1
                   echo destination branch commit is $GITHUB_SHA
                   echo 'y' | sfdx plugins:install sfpowerkit

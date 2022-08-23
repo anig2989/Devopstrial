@@ -101,7 +101,7 @@ jobs:
             # Deploy source to CI Org
             - name: 'Push source to CI org'
               run: |
-                    sfdx force:source:deploy -c -u anig2989@gmail.com -p change-sources/force-app
+                    sfdx force:source:deploy -c -u anig2989@gmail.com -p changed-sources/force-app/main/default
                     
             # Merge to destination branch
             - name: 'Merging to destination branch'

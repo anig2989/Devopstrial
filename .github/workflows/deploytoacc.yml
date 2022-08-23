@@ -88,6 +88,7 @@ jobs:
                   sfdx plugins:install sfdx-git-delta
                   mkdir changed-sources
                   sfdx sgd:source:delta --to "$PREVIOUS_SUCCESSFUL_COMMIT_ID" --from "$CURRENT_COMMIT_ID" --output changed-sources/ --generate-delta
+                  ls changed-sources
               env:
                CURRENT_BRANCH_NAME: ${{ inputs.CurrentBranch }}
                DESTINATION_BRANCH_NAME: ${{ inputs.DestinationBranch }}

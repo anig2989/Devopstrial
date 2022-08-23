@@ -85,10 +85,9 @@ jobs:
                   grep refs/heads/Promotional-${DESTINATION_BRANCH_NAME}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER} | cut -f 1 > PREVIOUS_SUCCESSFUL_COMMIT_ID.txt
                   PREVIOUS_SUCCESSFUL_COMMIT_ID=$(<PREVIOUS_SUCCESSFUL_COMMIT_ID.txt)
                   echo PREVIOUS_SUCCESSFUL_COMMIT_ID is $PREVIOUS_SUCCESSFUL_COMMIT_ID
-                  sfdx plugins:install sfdx-git-delta
-                  mkdir changed-sources
-                  sfdx sgd:source:delta --to "$PREVIOUS_SUCCESSFUL_COMMIT_ID" --from "$CURRENT_COMMIT_ID" --output changed-sources/ --generate-delta
-                  ls changed-sources
+                  echo 'y' | sfdx plugins:install sfpowerkit
+                  sfdx sfpowerkit:project:diff -r $CURRENT_COMMIT_ID -t $PREVIOUS_SUCCESSFUL_COMMIT_ID -d Delta_pkg
+
               env:
                CURRENT_BRANCH_NAME: ${{ inputs.CurrentBranch }}
                DESTINATION_BRANCH_NAME: ${{ inputs.DestinationBranch }}
@@ -102,7 +101,7 @@ jobs:
             # Deploy source to CI Org
             - name: 'Push source to CI org'
               run: |
-                    sfdx force:source:deploy -c -u anig2989@gmail.com -p changed-sources/force-app/main/default
+                    sfdx force:source:deploy -c -u anig2989@gmail.com -p Delta_pkg/force-app/main/default
                     
             # Merge to destination branch
             - name: 'Merging to destination branch'

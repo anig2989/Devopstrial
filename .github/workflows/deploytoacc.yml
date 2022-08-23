@@ -71,12 +71,13 @@ jobs:
             - name: 'Finding delta changes'
               run: |
                   source ./config.sh
-                  git rev-parse HEAD
+                  git rev-parse HEAD >> $CURRENT_COMMIT_ID
+                  echo PREVIOUS_SUCCESSFUL_COMMIT_ID
                   git ls-remote https://github.com/anig2989/Devopstrial.git | \
-                  grep refs/heads/preci | cut -f 1
-                  echo destination branch commit is $GITHUB_SHA
+                  grep refs/heads/preci | cut -f 1 >> PREVIOUS_SUCCESSFUL_COMMIT_ID
+                  echo PREVIOUS_SUCCESSFUL_COMMIT_ID
                   echo 'y' | sfdx plugins:install sfpowerkit
-                  sfdx sfpowerkit:project:diff -r $COMMIT_ID -t $NEW_COMMIT_ID -d Delta_pkg_CI
+                  sfdx sfpowerkit:project:diff -r PREVIOUS_SUCCESSFUL_COMMIT_ID -t $CURRENT_COMMIT_ID -d Delta_pkg
               
        
             # Authenticate Org

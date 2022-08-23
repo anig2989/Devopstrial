@@ -71,6 +71,14 @@ jobs:
             - name: 'Finding delta changes'
               run: |
                   source ./config.sh
+                  ource ./config.sh
+                  git remote set-url origin ${SOURCE_REPO_URL}
+                  git config --global user.email "${{ secrets.EMAIL_OF_USER_FOR_DESTINATION_REPO }}"
+                  git config --global user.name "${{ secrets.NAME_OF_USER }}"
+                  git fetch
+                  echo git checkout Promotional-${DESTINATION_BRANCH_NAME}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
+                  git checkout Promotional-${DESTINATION_BRANCH_NAME}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
+                 
                   CURRENT_COMMIT_ID=$(git rev-parse HEAD)
                   echo CURRENT_COMMIT_ID is $CURRENT_COMMIT_ID
                   PREVIOUS_SUCCESSFUL_COMMIT_ID=$(git ls-remote https://github.com/anig2989/Devopstrial.git | \
@@ -78,7 +86,9 @@ jobs:
                   echo PREVIOUS_SUCCESSFUL_COMMIT_ID is $PREVIOUS_SUCCESSFUL_COMMIT_ID
                   echo 'y' | sfdx plugins:install sfpowerkit
                   sfdx sfpowerkit:project:diff -r PREVIOUS_SUCCESSFUL_COMMIT_ID -t $CURRENT_COMMIT_ID -d Delta_pkg
-              
+              env:
+               CURRENT_BRANCH_NAME: ${{ inputs.CurrentBranch }}
+               DESTINATION_BRANCH_NAME: ${{ inputs.DestinationBranch }}
        
             # Authenticate Org
             - name: 'Authenticate CI Org'

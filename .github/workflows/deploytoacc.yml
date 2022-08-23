@@ -89,6 +89,7 @@ jobs:
               env:
                CURRENT_BRANCH_NAME: ${{ inputs.CurrentBranch }}
                DESTINATION_BRANCH_NAME: ${{ inputs.DestinationBranch }}
+               PASSWORD: ${{ secrets.PASSWORD }}
        
             # Authenticate Org
             - name: 'Authenticate CI Org'

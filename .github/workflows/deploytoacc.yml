@@ -85,8 +85,9 @@ jobs:
                   grep refs/heads/Promotional-${DESTINATION_BRANCH_NAME}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER} | cut -f 1 > PREVIOUS_SUCCESSFUL_COMMIT_ID.txt
                   PREVIOUS_SUCCESSFUL_COMMIT_ID=$(<PREVIOUS_SUCCESSFUL_COMMIT_ID.txt)
                   echo PREVIOUS_SUCCESSFUL_COMMIT_ID is $PREVIOUS_SUCCESSFUL_COMMIT_ID
-                  echo 'y' | sfdx plugins:install sfpowerkit
-                  sfdx sfpowerkit:project:diff -r $CURRENT_COMMIT_ID -t PREVIOUS_SUCCESSFUL_COMMIT_ID -d Delta_pkg
+                  sfdx plugins:install sfdx-git-delta
+                  mkdir changed-sources
+                  sfdx sgd:source:delta --to "$PREVIOUS_SUCCESSFUL_COMMIT_ID" --from "$CURRENT_COMMIT_ID" --output changed-sources/ --generate-delta
               env:
                CURRENT_BRANCH_NAME: ${{ inputs.CurrentBranch }}
                DESTINATION_BRANCH_NAME: ${{ inputs.DestinationBranch }}

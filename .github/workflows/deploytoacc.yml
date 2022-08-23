@@ -71,14 +71,12 @@ jobs:
             - name: 'Finding delta changes'
               run: |
                   source ./config.sh
-                  ource ./config.sh
                   git remote set-url origin ${SOURCE_REPO_URL}
                   git config --global user.email "${{ secrets.EMAIL_OF_USER_FOR_DESTINATION_REPO }}"
                   git config --global user.name "${{ secrets.NAME_OF_USER }}"
                   git fetch
                   echo git checkout Promotional-${DESTINATION_BRANCH_NAME}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
                   git checkout Promotional-${DESTINATION_BRANCH_NAME}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
-                 
                   CURRENT_COMMIT_ID=$(git rev-parse HEAD)
                   echo CURRENT_COMMIT_ID is $CURRENT_COMMIT_ID
                   PREVIOUS_SUCCESSFUL_COMMIT_ID=$(git ls-remote https://github.com/anig2989/Devopstrial.git | \

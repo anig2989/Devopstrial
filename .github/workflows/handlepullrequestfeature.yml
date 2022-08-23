@@ -26,8 +26,9 @@ jobs:
                   
             # Authenticate dev hub
             - name: 'Authenticate Dev Hub'
-              run: sfdx force:auth:jwt:grant --clientid ${{ secrets.CONSUMER_KEY }} --jwtkeyfile server.key --username ${{ secrets.CI_NAME }} --instanceurl ${{ secrets.CI_URL }} 
-
+              run: |
+                 sfdx force:auth:jwt:grant --clientid ${{ secrets.CONSUMER_KEY }} --jwtkeyfile server.key --username ${{ secrets.CI_NAME }} --instanceurl ${{ secrets.CI_URL }} 
+                 sfdx force:source:deploy -c -u anig2989@gmail.com -p force-app/main/default
             
             
         

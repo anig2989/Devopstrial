@@ -77,7 +77,7 @@ jobs:
                   git fetch
                   echo git checkout Promotional-${DESTINATION_BRANCH_NAME}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
                   git checkout Promotional-${DESTINATION_BRANCH_NAME}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
-                  git rev-parse $DESTINATION_BRANCH_NAME > CURRENT_COMMIT_ID.txt
+                  git rev-parse $CURRENT_BRANCH_NAME > CURRENT_COMMIT_ID.txt
                   CURRENT_COMMIT_ID=$(<CURRENT_COMMIT_ID.txt)
                   echo CURRENT_COMMIT_ID is $CURRENT_COMMIT_ID
                   git ls-remote https://github.com/anig2989/Devopstrial.git | \

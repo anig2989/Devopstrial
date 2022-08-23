@@ -101,7 +101,7 @@ jobs:
             # Deploy source to CI Org
             - name: 'Push source to CI org'
               run: |
-                    sfdx force:source:deploy -c -u anig2989@gmail.com -p Delta-pkg/force-app/main/default
+                    sfdx force:source:deploy -c -u anig2989@gmail.com -p change-sources
                     
             # Merge to destination branch
             - name: 'Merging to destination branch'

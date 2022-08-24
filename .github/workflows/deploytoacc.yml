@@ -88,8 +88,12 @@ jobs:
                   PREVIOUS_SUCCESSFUL_COMMIT_ID=$(git rev-parse HEAD)
                   echo PREVIOUS_SUCCESSFUL_COMMIT_ID is $PREVIOUS_SUCCESSFUL_COMMIT_ID
                   echo 'y' | sfdx plugins:install sfpowerkit
-                  sfdx sfpowerkit:project:diff -r $PREVIOUS_SUCCESSFUL_COMMIT_ID -t $CURRENT_COMMIT_ID -d Delta_pkg
+                  #sfdx sfpowerkit:project:diff -r $PREVIOUS_SUCCESSFUL_COMMIT_ID -t $CURRENT_COMMIT_ID -d Delta_pkg
+                  #sfdx plugins:install sfdx-git-delta
+                  mkdir changed-sources
+                  sfdx sgd:source:delta --to CI --from preci --output changed-sources/ --generate-delta
 
+                  
               env:
                CURRENT_BRANCH_NAME: ${{ inputs.CurrentBranch }}
                DESTINATION_BRANCH_NAME: ${{ inputs.DestinationBranch }}

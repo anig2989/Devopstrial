@@ -44,10 +44,10 @@ echo git checkout -b Promotional-$DESTINATION_BRANCH_NAME-${GITHUB_RUN_ID}-${GIT
 git checkout -b Promotional-$DESTINATION_BRANCH_NAME-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER} $DESTINATION_BRANCH_NAME
 
 git checkout Promotional-$DESTINATION_BRANCH_NAME-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
-#git remote set-url origin ${SOURCE_REPO_URL}
-#git config --global user.email $EMAIL_OF_USER_FOR_DESTINATION_REPO
-#git config --global user.name $NAME_OF_USER
-#git fetch
+git remote set-url origin ${SOURCE_REPO_URL}
+git config --global user.email "anig2989@gmail.com"
+git config --global user.name "anig2989"
+git fetch
 
 git add .
 git commit -m "creating promotional branch"

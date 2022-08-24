@@ -24,7 +24,7 @@ jobs:
   # Authenticate dev hub
          - name: 'Authenticate Dev Hub'
            run: 
-            sfdx force:auth:jwt:grant --clientid ${{ secrets.CONSUMER_KEY }} --jwtkeyfile ./server.key --username ${{ secrets.USER_NAME }} --instanceurl ${{ secrets.TARGET_URL }}
+            sfdx force:auth:jwt:grant --clientid ${{ secrets.CONSUMER_KEY }} --jwtkeyfile ./server.key --username ${{ secrets.USER_NAME }} --instanceurl ${{ secrets.CI_URL }}
 
   # Validating and deploying the deployment
          - name: 'Validation and deployment'

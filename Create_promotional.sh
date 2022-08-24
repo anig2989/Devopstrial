@@ -1,6 +1,6 @@
 #using config.sh as source file
 #source ./config.sh
-SOURCE_REPO_URL="https://github.com/anig2989/Devopstrial.git"
+SOURCE_REPO_URL="https://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@github.com/anig2989/Devopstrial.git"
 NAME_OF_USER="anig2989"
 EMAIL_OF_USER_FOR_DESTINATION_REPO="anig2989@gmail.com"
 #CURRENT_BRANCH_NAME='preci'

@@ -51,8 +51,8 @@ jobs:
               run: |
                   source ./config.sh
                   echo "Creating promotional Branch..."
-                  chmod +x scripts/Create_promotional.sh
-                  sh scripts/Create_promotional.sh
+                  chmod +x Create_promotional.sh
+                  sh Create_promotional.sh
               env:
                CURRENT_BRANCH_NAME: ${{ inputs.CurrentBranch }}
                DESTINATION_BRANCH_NAME: ${{ inputs.DestinationBranch }}

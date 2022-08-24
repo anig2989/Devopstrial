@@ -29,4 +29,4 @@ jobs:
   # Validating and deploying the deployment
          - name: 'Validation and deployment'
            run: 
-            sfdx force:source:deploy -c -u ${{ secrets.USER_NAME }} -p "./force-app/main/default"
+            sfdx force:source:deploy -c -u ${{ secrets.CI_NAME }} -p "./force-app/main/default"

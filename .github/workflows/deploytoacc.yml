@@ -86,7 +86,7 @@ jobs:
                   #PREVIOUS_SUCCESSFUL_COMMIT_ID=$(<PREVIOUS_SUCCESSFUL_COMMIT_ID.txt)
                   echo PREVIOUS_SUCCESSFUL_COMMIT_ID is $PREVIOUS_SUCCESSFUL_COMMIT_ID
                   echo 'y' | sfdx plugins:install sfpowerkit
-                  sfdx sfpowerkit:project:diff -r $CURRENT_COMMIT_ID -t d1c3554c15f43f3a0cd590f3df5dc16ae1a837af -d Delta_pkg
+                  sfdx sfpowerkit:project:diff -r $CURRENT_COMMIT_ID -t $PREVIOUS_SUCCESSFUL_COMMIT_ID -d Delta_pkg
 
               env:
                CURRENT_BRANCH_NAME: ${{ inputs.CurrentBranch }}

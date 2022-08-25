@@ -47,7 +47,6 @@ jobs:
               
             #  Create promotional Branch     
             - name: 'Creating promotional branch before code promotion'
-              shell: bash
               run: |
                   #source ./config.sh
                   echo "Creating promotional Branch..."

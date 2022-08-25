@@ -81,8 +81,10 @@ jobs:
                   git checkout $DESTINATION_BRANCH_NAME
                   echo git checkout -b Promotional-$DESTINATION_BRANCH_NAME-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER} $DESTINATION_BRANCH_NAME
                   git checkout -b Promotional-$DESTINATION_BRANCH_NAME-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER} $DESTINATION_BRANCH_NAME
-                  git config --global user.email "${EMAIL_OF_USER_FOR_DESTINATION_REPO}"
-                  git config --global user.name "${NAME_OF_USER}"
+                  git checkout Promotional-$DESTINATION_BRANCH_NAME-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
+                  git remote set-url origin ${SOURCE_REPO_URL}
+                  git config --global user.email "$EMAIL_OF_USER_FOR_DESTINATION_REPO"
+                  git config --global user.name "$NAME_OF_USER"
                   git add .
                   git commit -m "creating promotional branch"
                   git push origin Promotional-$DESTINATION_BRANCH_NAME-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}

@@ -63,6 +63,8 @@ jobs:
                   #Entering into directory where the repo is cloned.
                   echo cd ${SOURCE_DIRECTORY} 
                   cd ${SOURCE_DIRECTORY}
+                  git config --global user.email "${EMAIL_OF_USER_FOR_DESTINATION_REPO}"
+                  git config --global user.name "${NAME_OF_USER}"
                   echo git fetch origin
                   git fetch origin
                   destination_exists=$(git ls-remote --heads origin $DESTINATION_BRANCH_NAME | wc -l)
@@ -82,8 +84,8 @@ jobs:
                   git checkout -b Promotional-$DESTINATION_BRANCH_NAME-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER} $DESTINATION_BRANCH_NAME
                   git checkout Promotional-$DESTINATION_BRANCH_NAME-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
                   #git remote set-url origin ${SOURCE_REPO_URL}
-                  git config --global user.email "${{ secrets.EMAIL_OF_USER_FOR_DESTINATION_REPO }}"
-                  git config --global user.name "${{ secrets.NAME_OF_USER }}"
+                  #git config --global user.email "${{ secrets.EMAIL_OF_USER_FOR_DESTINATION_REPO }}"
+                  #git config --global user.name "${{ secrets.NAME_OF_USER }}"
                   git config --list
                   #git fetch
                   git add .

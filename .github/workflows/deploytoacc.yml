@@ -81,7 +81,7 @@ jobs:
                   git checkout $DESTINATION_BRANCH_NAME
                   echo git checkout -b Promotional-$DESTINATION_BRANCH_NAME-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER} $DESTINATION_BRANCH_NAME
                   git checkout -b Promotional-$DESTINATION_BRANCH_NAME-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER} $DESTINATION_BRANCH_NAME
-                  git checkout Promotional-$DESTINATION_BRANCH_NAME-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER
+                  git checkout Promotional-$DESTINATION_BRANCH_NAME-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
                   echo git config --global user.email "anig2989@gmail.com"
                   git config --global user.email "anig2989@gmail.com"
                   echo git config --global user.name "anig2989"

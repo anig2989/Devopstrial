@@ -10,7 +10,7 @@ SOURCE_DIRECTORY=`basename "${SOURCE_REPO_URL}" .git`
 echo $CURRENT_BRANCH_NAME
 #cloning the repo.
 echo git clone ${SOURCE_REPO_URL}
-git clone ${SOURCE_REPO_URL}
+git remote set-url origin ${SOURCE_REPO_URL}
 #Entering into directory where the repo is cloned.
 echo cd ${SOURCE_DIRECTORY} 
 cd ${SOURCE_DIRECTORY}

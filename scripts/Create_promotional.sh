@@ -66,7 +66,7 @@ echo git merge origin/$CURRENT_BRANCH_NAME
 #exec_cmd "git merge origin/$CURRENT_BRANCH_NAME"
 Merging current branch with Promotional branch.
 echo git merge origin/$CURRENT_BRANCH_NAME
-git merge origin/$CURRENT_BRANCH_NAME
+git merge origin/$CURRENT_BRANCH_NAME --allow-unrelated-histories
 #Pushing Promotional branch.
 exec_cmd()
 {

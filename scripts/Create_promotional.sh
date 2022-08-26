@@ -63,10 +63,10 @@ exec_cmd()
   fi
 }
 echo git merge origin/$CURRENT_BRANCH_NAME
-exec_cmd "git merge origin/$CURRENT_BRANCH_NAME"
-#Merging current branch with Promotional branch.
-#echo git merge origin/$CURRENT_BRANCH_NAME
-#git merge origin/$CURRENT_BRANCH_NAME
+#exec_cmd "git merge origin/$CURRENT_BRANCH_NAME"
+Merging current branch with Promotional branch.
+echo git merge origin/$CURRENT_BRANCH_NAME
+git merge origin/$CURRENT_BRANCH_NAME
 #Pushing Promotional branch.
 exec_cmd()
 {

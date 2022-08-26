@@ -7,6 +7,7 @@ on:
 jobs:
      authenticate-deploy:
        runs-on: ubuntu-latest
+       container: aniacr.azurecr.io/sfdx-azure-pipeline.git:162
        steps:
        # Checkout the source code
          - name: 'Checkout source code'

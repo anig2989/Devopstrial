@@ -83,10 +83,10 @@ jobs:
                   grep refs/heads/${CURRENT_BRANCH_NAME} | cut -f 1 > CURRENT_COMMIT_ID.txt
                   CURRENT_COMMIT_ID=$(<CURRENT_COMMIT_ID.txt)
                   echo CURRENT_COMMIT_ID is $CURRENT_COMMIT_ID
-                  #git ls-remote https://github.com/anig2989/Devopstrial.git | \
-                  #grep refs/heads/Promotional-${DESTINATION_BRANCH_NAME}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER} | cut -f 1 > PREVIOUS_SUCCESSFUL_COMMIT_ID.txt
-                  #PREVIOUS_SUCCESSFUL_COMMIT_ID=$(<PREVIOUS_SUCCESSFUL_COMMIT_ID.txt)
-                  PREVIOUS_SUCCESSFUL_COMMIT_ID=$(git rev-parse HEAD)
+                  git ls-remote https://github.com/anig2989/Devopstrial.git | \
+                  grep refs/heads/Promotional-${DESTINATION_BRANCH_NAME}-${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER} | cut -f 1 > PREVIOUS_SUCCESSFUL_COMMIT_ID.txt
+                  PREVIOUS_SUCCESSFUL_COMMIT_ID=$(<PREVIOUS_SUCCESSFUL_COMMIT_ID.txt)
+                  #PREVIOUS_SUCCESSFUL_COMMIT_ID=$(git rev-parse HEAD)
                   echo PREVIOUS_SUCCESSFUL_COMMIT_ID is $PREVIOUS_SUCCESSFUL_COMMIT_ID
                   echo 'y' | sfdx plugins:install sfpowerkit
                   sfdx sfpowerkit:project:diff -r $PREVIOUS_SUCCESSFUL_COMMIT_ID -t $CURRENT_COMMIT_ID -d Delta_pkg

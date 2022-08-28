@@ -30,7 +30,7 @@ jobs:
             # Validate code in source repo
             - name: 'Push source to CI org'
               run: |
-                    sfdx force:source:deploy -c -u anig2989@gmail -p force-app/main/default
+                    sfdx force:source:deploy -c -u anig2989@gmail@gmail.com -p force-app/main/default
                     
             # Install PMD
             - name: 'Install PMD'

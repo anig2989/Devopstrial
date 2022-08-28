@@ -1,0 +1,35 @@
+name: Deployment_Init
+
+on: 
+  workflow_dispatch
+  
+  
+jobs:
+     authenticate-deploy:
+       runs-on: ubuntu-latest
+       container: aniacr.azurecr.io/sfdx-azure-pipeline.git:162
+       steps:
+       # Checkout the source code
+         - name: 'Checkout source code'
+           uses: actions/checkout@v2
+
+  # Install Salesforce CLI
+         - name: 'Install Salesforce CLI'
+           run: |
+            wget https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz
+            mkdir ~/sfdx
+            tar xJf sfdx-linux-x64.tar.xz -C ~/sfdx --strip-components 1
+            echo "$HOME/sfdx/bin" >> $GITHUB_PATH
+            ~/sfdx/bin/sfdx version
+            
+  
+  # Authenticate dev hub
+         - name: 'Authenticate Dev Hub'
+           run: 
+            sfdx force:auth:jwt:grant --clientid ${{ secrets.CONSUMER_KEY }} --jwtkeyfile ./server.key --username ${{ secrets.CI_NAME }} --instanceurl ${{ secrets.CI_URL }}
+
+  # Validating and deploying the deployment
+         - name: 'Validation and deployment'
+           run: 
+            sfdx force:source:deploy -c -u ${{ secrets.CI_NAME }} -p "./force-app/main/default"
+

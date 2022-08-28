@@ -4,7 +4,7 @@ name: PushToFeature
 on:
   
   push:
-    branches: featuretest
+    branches: none
  
 jobs:
     pmd-run:

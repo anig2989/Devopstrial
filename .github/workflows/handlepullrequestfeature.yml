@@ -4,7 +4,7 @@ name: HandlePullRequest
 on:
   
   pull_request:
-    branches: preci
+    branches: none
   
 jobs:
   authenticate-deploy:

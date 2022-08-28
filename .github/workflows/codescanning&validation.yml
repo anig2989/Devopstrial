@@ -1,1 +1,47 @@
+name: Code-Scanning
+
+on:
+  
+  pull_request:
+    branches: preci
+  
+jobs:
+  authenticate-deploy:
+        runs-on: ubuntu-latest
+        steps:
+        # Checkout the source code
+            - name: 'Checkout source code'
+              uses: actions/checkout@v2
+
+              
+            # Install Salesforce CLI
+            - name: 'Install Salesforce CLI'
+              run: |
+                  wget https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz
+                  mkdir ~/sfdx
+                  tar xJf sfdx-linux-x64.tar.xz -C ~/sfdx --strip-components 1
+                  echo "$HOME/sfdx/bin" >> $GITHUB_PATH
+                  ~/sfdx/bin/sfdx version
+                  
+            # Authenticate 
+            - name: 'Authenticate Dev Hub'
+              run: sfdx force:auth:jwt:grant --clientid ${{ secrets.CONSUMER_KEY }} --jwtkeyfile server.key --username ${{ secrets.CI_NAME }} --instanceurl ${{ secrets.CI_URL }} 
+            
+            # Validate code in source repo
+            - name: 'Push source to CI org'
+              run: |
+                    sfdx force:source:deploy -c -u anig2989@gmail.com -p Delta_pkg/force-app/main/default
+                    
+            # Install PMD
+            - name: 'Install PMD'
+              run: |
+                  PMD_VERSION=`cat pmd/pmd-version.txt`
+                  wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F$PMD_VERSION/pmd-bin-$PMD_VERSION.zip
+                  unzip pmd-bin-$PMD_VERSION.zip -d ~
+                  mv ~/pmd-bin-$PMD_VERSION ~/pmd
+                  ~/pmd/bin/run.sh pmd --version
+                  
+            # Run PMD scan
+            - name: 'Run PMD scan'
+              run: ~/pmd/bin/run.sh pmd -d force-app -R pmd/ruleset.xml -f text
 

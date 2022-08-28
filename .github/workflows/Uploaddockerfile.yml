@@ -1,13 +1,12 @@
-name: Deployment_Init
+name: UploadDockerfile
 
 on: 
   workflow_dispatch
   
   
 jobs:
-     authenticate-deploy:
+     upload-dockerfile:
        runs-on: ubuntu-latest
-       container: aniacr.azurecr.io/sfdx-azure-pipeline.git:162
        steps:
        # Checkout the source code
          - name: 'Checkout source code'
@@ -23,13 +22,3 @@ jobs:
             ~/sfdx/bin/sfdx version
             
   
-  # Authenticate dev hub
-         - name: 'Authenticate Dev Hub'
-           run: 
-            sfdx force:auth:jwt:grant --clientid ${{ secrets.CONSUMER_KEY }} --jwtkeyfile ./server.key --username ${{ secrets.CI_NAME }} --instanceurl ${{ secrets.CI_URL }}
-
-  # Validating and deploying the deployment
-         - name: 'Validation and deployment'
-           run: 
-            sfdx force:source:deploy -c -u ${{ secrets.CI_NAME }} -p "./force-app/main/default"
-
